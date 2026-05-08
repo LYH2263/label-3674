@@ -1,0 +1,40 @@
+name: Build Backend
+description: Build and test the backend Java/Maven module
+inputs:
+  java-version:
+    description: JDK version
+    required: false
+    default: '17'
+runs:
+  using: composite
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: temurin
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository
+        key: maven-${{ runner.os }}-${{ hashFiles('backend/pom.xml') }}
+        restore-keys: |
+          maven-${{ runner.os }}-
+
+    - name: Build with Maven
+      working-directory: backend
+      run: mvn clean package -B -s settings.xml
+      shell: bash
+
+    - name: Run tests
+      working-directory: backend
+      run: mvn test -B -s settings.xml
+      shell: bash
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-war
+        path: backend/target/smart-community.war
+        retention-days: 5

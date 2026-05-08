@@ -7,3 +7,12 @@ backend/target
 .idea
 .vscode
 uploads
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
