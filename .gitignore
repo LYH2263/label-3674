@@ -7,3 +7,13 @@ backend/target
 .idea
 .vscode
 uploads
+
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.venv
+venv/
+ENV/
+*.egg-info/
+.eggs/
