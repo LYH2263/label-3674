@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Smart Community Service API",
+    "version": "1.1.0",
+    "description": "智慧社区服务平台接口文档（Servlet 版本）"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current host"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "summary": "账号登录"
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "账号注册"
+      }
+    },
+    "/api/system/overview": {
+      "get": {
+        "summary": "个人总览"
+      }
+    },
+    "/api/system/intelligent-notices": {
+      "get": {
+        "summary": "智能通知（个性化推荐 + 天气提醒）"
+      }
+    },
+    "/api/repairs": {
+      "post": {
+        "summary": "创建报修"
+      }
+    },
+    "/api/repairs/my": {
+      "get": {
+        "summary": "我的报修"
+      }
+    },
+    "/api/activities": {
+      "get": {
+        "summary": "活动列表"
+      },
+      "post": {
+        "summary": "发布活动"
+      }
+    },
+    "/api/activities/{id}/signup": {
+      "post": {
+        "summary": "活动报名"
+      }
+    },
+    "/api/activities/{id}/checkin-qrcode": {
+      "get": {
+        "summary": "获取活动签到二维码数据"
+      }
+    },
+    "/api/activities/{id}/checkin": {
+      "post": {
+        "summary": "活动签到"
+      }
+    },
+    "/api/activities/{id}/reviews": {
+      "get": {
+        "summary": "活动回顾列表"
+      },
+      "post": {
+        "summary": "发布活动回顾"
+      }
+    },
+    "/api/neighborhood/posts": {
+      "get": {
+        "summary": "邻里互动列表"
+      },
+      "post": {
+        "summary": "发布邻里互动"
+      }
+    },
+    "/api/property/overview": {
+      "get": {
+        "summary": "物业服务总览"
+      }
+    },
+    "/api/property/payments/{id}/pay-intent": {
+      "post": {
+        "summary": "创建在线缴费支付单"
+      }
+    },
+    "/api/property/payments/{id}/confirm": {
+      "post": {
+        "summary": "确认在线缴费"
+      }
+    },
+    "/api/messages": {
+      "get": {
+        "summary": "消息列表"
+      }
+    },
+    "/api/messages/{id}/read": {
+      "patch": {
+        "summary": "消息已读"
+      }
+    }
+  }
+}

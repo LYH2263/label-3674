@@ -1,0 +1,60 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: smart-community-db-3674
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root3674}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-smart_community}
+      MYSQL_USER: ${MYSQL_USER:-smart_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-smart_pass_3674}
+      TZ: Asia/Shanghai
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "13674:3306"
+    volumes:
+      - db_data_3674:/var/lib/mysql
+      - ./backend/src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root3674}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build:
+      context: ./backend
+    container_name: smart-community-backend-3674
+    environment:
+      APP_DB_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-smart_community}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+      APP_DB_USER: ${MYSQL_USER:-smart_user}
+      APP_DB_PASSWORD: ${MYSQL_PASSWORD:-smart_pass_3674}
+      APP_JWT_SECRET: ${JWT_SECRET:-smart-community-secret-3674}
+      APP_CRYPTO_KEY: ${APP_CRYPTO_KEY:-smart-community-crypto-key-3674}
+      APP_ACTIVITY_CHECKIN_SECRET: ${APP_ACTIVITY_CHECKIN_SECRET:-smart-community-checkin-secret-3674}
+      APP_STORAGE_TYPE: ${APP_STORAGE_TYPE:-LOCAL}
+      APP_OBJECT_STORAGE_DIR: /opt/tomcat/object-storage
+      APP_OBJECT_BASE_URL: /api/files
+      APP_UPLOAD_DIR: /opt/tomcat/uploads
+      TZ: Asia/Shanghai
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8674:8080"
+    volumes:
+      - uploads_3674:/opt/tomcat/uploads
+      - object_storage_3674:/opt/tomcat/object-storage
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: smart-community-frontend-3674
+    depends_on:
+      - backend
+    ports:
+      - "3674:80"
+
+volumes:
+  db_data_3674:
+  uploads_3674:
+  object_storage_3674:
